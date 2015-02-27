@@ -20,11 +20,11 @@ CREATE TABLE players (
 
 -- Create the table for the list of matches
 CREATE TABLE matches (
+	id 			SERIAL PRIMARY KEY,
 	player1		INTEGER NOT NULL REFERENCES players(id),
 	player2		INTEGER NOT NULL REFERENCES players(id),
 	winner		INTEGER NULL REFERENCES players(id),
-	match_time  TIMESTAMPTZ NOT NULL DEFAULT CURRENT_DATE,
-	PRIMARY KEY (player1, player2)
+	match_time  TIMESTAMPTZ NOT NULL DEFAULT CURRENT_DATE
 );
 
 

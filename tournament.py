@@ -17,6 +17,7 @@ def deleteMatches():
     cursor = conn.cursor()
     cursor.execute("DELETE FROM matches;")
     conn.commit()
+    conn.close()
 
 
 def deletePlayers():
@@ -25,6 +26,7 @@ def deletePlayers():
     cursor = conn.cursor()
     cursor.execute("DELETE FROM players;")
     conn.commit()
+    conn.close()
 
 
 def countPlayers():
@@ -33,6 +35,7 @@ def countPlayers():
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) AS num FROM players;")
     results = cursor.fetchone()
+    conn.close()
     return results[0]
     
 
@@ -49,6 +52,7 @@ def registerPlayer(name):
     cursor = conn.cursor()
     cursor.execute("INSERT INTO players(name) VALUES(%s);", (bleach.clean(name),))
     conn.commit()
+    conn.close()
 
 
 def playerStandings():
@@ -67,6 +71,7 @@ def playerStandings():
     conn = connect()
     cursor = conn.cursor()
     cursor.execute("SELECT id, name, wins, matches FROM player_standings")
+    conn.close()
     return cursor.fetchall()
 
 
@@ -81,6 +86,7 @@ def reportMatch(winner, loser):
     cursor = conn.cursor()
     cursor.execute("INSERT INTO matches(player1, player2, winner) VALUES(%s, %s, %s);", (bleach.clean(winner), bleach.clean(loser), bleach.clean(winner),))
     conn.commit()
+    conn.close()
  
  
 def swissPairings():
@@ -101,5 +107,5 @@ def swissPairings():
     conn = connect()
     cursor = conn.cursor()
     cursor.execute("SELECT a.id1, p1.name AS name1, a.id2, p2.name AS name2 FROM (SELECT MIN(p.id) AS id1, MAX(p.id) AS id2 FROM player_standings p GROUP BY ((p.rank + 1) / 2)) AS a INNER JOIN players p1 ON p1.id = a.id1 INNER JOIN players p2 ON p2.id = a.id2;")
+    conn.close()
     return cursor.fetchall()
-
